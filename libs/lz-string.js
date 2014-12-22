@@ -18,11 +18,13 @@ var LZString = {
     if (input == null) return "";
     var output = "";
     var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-    var i = 0;
+    var i = 00
+    var length;
     
     input = LZString.compress(input);
     
-    while (i < input.length*2) {
+    length = input.length * 2;
+    while (i < length) {
       
       if (i%2==0) {
         chr1 = input.charCodeAt(i/2) >> 8;
@@ -68,11 +70,13 @@ var LZString = {
         output_,
         chr1, chr2, chr3,
         enc1, enc2, enc3, enc4,
-        i = 0, f=LZString._f;
+        i = 0, f=LZString._f,
+        length;
     
     input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
     
-    while (i < input.length) {
+    length = input.length;
+    while (i < length) {
       
       enc1 = LZString._keyStr.indexOf(input.charAt(i++));
       enc2 = LZString._keyStr.indexOf(input.charAt(i++));
@@ -115,11 +119,13 @@ var LZString = {
         i,c,
         current,
         status = 0,
-        f = LZString._f;
+        f = LZString._f,
+        length;
     
     input = LZString.compress(input);
+    length = input.length;
     
-    for (i=0 ; i<input.length ; i++) {
+    for (i=0 ; i<length ; i++) {
       c = input.charCodeAt(i);
       switch (status++) {
         case 0:
@@ -195,9 +201,10 @@ var LZString = {
         current,c,
         status=0,
         i = 0,
-        f = LZString._f;
+        f = LZString._f,
+        length = input.length;
     
-    while (i < input.length) {
+    while (i < length) {
       c = input.charCodeAt(i) - 32;
       
       switch (status++) {
@@ -337,9 +344,10 @@ var LZString = {
         context_data_val=0, 
         context_data_position=0,
         ii,
-        f=LZString._f;
+        f=LZString._f,
+        length = uncompressed.length;
     
-    for (ii = 0; ii < uncompressed.length; ii += 1) {
+    for (ii = 0; ii < length; ii += 1) {
       context_c = uncompressed.charAt(ii);
       if (!Object.prototype.hasOwnProperty.call(context_dictionary,context_c)) {
         context_dictionary[context_c] = context_dictSize++;
@@ -429,7 +437,7 @@ var LZString = {
         }
         // Add wc to the dictionary.
         context_dictionary[context_wc] = context_dictSize++;
-        context_w = String(context_c);
+        context_w = "" + context_c; //String(context_c);
       }
     }
     
@@ -555,14 +563,14 @@ var LZString = {
         bits, resb, maxpower, power,
         c,
         f = LZString._f,
-        data = {string:compressed, val:compressed.charCodeAt(0), position:32768, index:1};
+        data = {string:compressed, length: compressed.length, val:compressed.charCodeAt(0), position:32768, index:1};
     
     for (i = 0; i < 3; i += 1) {
       dictionary[i] = i;
     }
     
     bits = 0;
-    maxpower = Math.pow(2,2);
+    maxpower = 4; //Math.pow(2,2);
     power=1;
     while (power!=maxpower) {
       resb = data.val & data.position;
@@ -578,7 +586,7 @@ var LZString = {
     switch (next = bits) {
       case 0: 
           bits = 0;
-          maxpower = Math.pow(2,8);
+          maxpower = 256; //Math.pow(2,8);
           power=1;
           while (power!=maxpower) {
             resb = data.val & data.position;
@@ -594,7 +602,7 @@ var LZString = {
         break;
       case 1: 
           bits = 0;
-          maxpower = Math.pow(2,16);
+          maxpower = 65536; //Math.pow(2,16);
           power=1;
           while (power!=maxpower) {
             resb = data.val & data.position;
@@ -614,7 +622,7 @@ var LZString = {
     dictionary[3] = c;
     w = result = c;
     while (true) {
-      if (data.index > data.string.length) {
+      if (data.index > data.length) {
         return "";
       }
       
@@ -635,7 +643,7 @@ var LZString = {
       switch (c = bits) {
         case 0: 
           bits = 0;
-          maxpower = Math.pow(2,8);
+          maxpower = 256; //Math.pow(2,8);
           power=1;
           while (power!=maxpower) {
             resb = data.val & data.position;
@@ -654,7 +662,7 @@ var LZString = {
           break;
         case 1: 
           bits = 0;
-          maxpower = Math.pow(2,16);
+          maxpower = 65536; //Math.pow(2,16);
           power=1;
           while (power!=maxpower) {
             resb = data.val & data.position;
